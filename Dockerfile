@@ -20,6 +20,9 @@ RUN sed -i "s/;date.timezone =.*/date.timezone = Asia\/Jakarta/g" /etc/php7/php.
     && sed -i "s/listen.group = nobody/listen.group = root/g" /etc/php7/php-fpm.d/www.conf \
     && sed -i "s/listen.group = nobody/listen.group = root/g" /etc/php7/php-fpm.d/www.conf
 
+
+RUN echo "extension=mongodb.so" > /etc/php7/conf.d/mongodb.ini
+
 # Copy nginx config
 COPY config/nginx.conf /etc/nginx/nginx.conf
 COPY config/upstream.conf /etc/nginx/upstream.conf
@@ -36,6 +39,7 @@ VOLUME /home/projects
 WORKDIR /home/projects
 
 COPY src /home/projects
+COPY config/info.conf /etc/nginx/conf.d
 
 EXPOSE 80 443
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
