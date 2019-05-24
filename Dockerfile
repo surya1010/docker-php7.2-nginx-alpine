@@ -33,13 +33,15 @@ COPY config/fpm-pool.conf /etc/php7/php-fpm.d/my_custom.conf
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+
+COPY config/info.conf /etc/nginx/conf.d
+
 # Add application
 RUN mkdir -p /home/projects
 VOLUME /home/projects
 WORKDIR /home/projects
 
 COPY src /home/projects
-COPY config/info.conf /etc/nginx/conf.d
 
 EXPOSE 80 443
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
