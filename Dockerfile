@@ -9,8 +9,7 @@ RUN apk --no-cache add php7 php7-fpm php7-mysqli php7-json php7-openssl php7-cur
     php7-opcache php7-zip php7-pdo php7-pdo_mysql php7-tokenizer php7-fileinfo php7-pdo_mysql php7-simplexml \
     php7-xmlwriter php7-iconv composer php7-fileinfo \
     pecl install mongodb \
-	    && pecl install xdebug-beta \
-	    && docker-php-ext-enable xdebug
+	    && pecl install
 
 # Config PHP
 RUN sed -i "s/;date.timezone =.*/date.timezone = Asia\/Jakarta/g" /etc/php7/php.ini \
@@ -38,6 +37,8 @@ COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN mkdir -p /home/projects
 VOLUME /home/projects
 WORKDIR /home/projects
+
+COPY src/ /home/projects
 
 EXPOSE 80 443
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
