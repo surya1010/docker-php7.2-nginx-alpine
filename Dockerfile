@@ -18,8 +18,7 @@ RUN sed -i "s/;date.timezone =.*/date.timezone = Asia\/Jakarta/g" /etc/php7/php.
     && sed -i "s/group = nobody/group = root/g" /etc/php7/php-fpm.d/www.conf \
     && sed -i "s/listen.owner = nobody/listen.owner = root/g" /etc/php7/php-fpm.d/www.conf \
     && sed -i "s/listen.group = nobody/listen.group = root/g" /etc/php7/php-fpm.d/www.conf \
-    && sed -i "s/listen.group = nobody/listen.group = root/g" /etc/php7/php-fpm.d/www.conf \
-    echo "extension=mongodb.so" > /etc/php7/conf.d/mongodb.ini
+    && sed -i "s/listen.group = nobody/listen.group = root/g" /etc/php7/php-fpm.d/www.conf
 
 # Copy nginx config
 COPY config/nginx.conf /etc/nginx/nginx.conf
