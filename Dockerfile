@@ -13,9 +13,6 @@ RUN  pecl install mongodb \
 	&& pecl install xdebug-beta \
 	&& docker-php-ext-enable xdebug
 
-
-RUN echo "extension=mongodb.so" > $PHP_INI_DIR/conf.d/mongodb.ini
-
 # Config PHP
 RUN sed -i "s/;date.timezone =.*/date.timezone = Asia\/Jakarta/g" /etc/php7/php.ini \
     && sed -i "s/upload_max_filesize =.*/upload_max_filesize = 250M/g" /etc/php7/php.ini \
@@ -26,6 +23,8 @@ RUN sed -i "s/;date.timezone =.*/date.timezone = Asia\/Jakarta/g" /etc/php7/php.
     && sed -i "s/listen.owner = nobody/listen.owner = root/g" /etc/php7/php-fpm.d/www.conf \
     && sed -i "s/listen.group = nobody/listen.group = root/g" /etc/php7/php-fpm.d/www.conf \
     && sed -i "s/listen.group = nobody/listen.group = root/g" /etc/php7/php-fpm.d/www.conf
+
+RUN echo "extension=mongodb.so" > /etc/php7/conf.d/mongodb.ini
 
 # Copy nginx config
 COPY config/nginx.conf /etc/nginx/nginx.conf
