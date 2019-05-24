@@ -7,7 +7,14 @@ RUN apk --no-cache add php7 php7-fpm php7-mysqli php7-json php7-openssl php7-cur
     php7-zlib php7-xml php7-intl php7-dom php7-xmlreader php7-ctype \
     php7-mbstring php7-gd nginx supervisor curl php7-imagick php7-redis php7-xdebug \
     php7-opcache php7-zip php7-pdo php7-pdo_mysql php7-tokenizer php7-fileinfo php7-pdo_mysql php7-simplexml \
-    php7-xmlwriter php7-iconv composer php7-fileinfo php7-mongodb 
+    php7-xmlwriter php7-iconv composer php7-fileinfo
+
+RUN  pecl install mongodb \
+	&& pecl install xdebug-beta \
+	&& docker-php-ext-enable xdebug
+
+
+RUN echo "extension=mongodb.so" > $PHP_INI_DIR/conf.d/mongodb.ini
 
 # Config PHP
 RUN sed -i "s/;date.timezone =.*/date.timezone = Asia\/Jakarta/g" /etc/php7/php.ini \
@@ -20,9 +27,6 @@ RUN sed -i "s/;date.timezone =.*/date.timezone = Asia\/Jakarta/g" /etc/php7/php.
     && sed -i "s/listen.group = nobody/listen.group = root/g" /etc/php7/php-fpm.d/www.conf \
     && sed -i "s/listen.group = nobody/listen.group = root/g" /etc/php7/php-fpm.d/www.conf
 
-
-RUN echo "extension=mongodb.so" > /etc/php7/conf.d/mongodb.ini
-
 # Copy nginx config
 COPY config/nginx.conf /etc/nginx/nginx.conf
 COPY config/upstream.conf /etc/nginx/upstream.conf
@@ -33,15 +37,10 @@ COPY config/fpm-pool.conf /etc/php7/php-fpm.d/my_custom.conf
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-
-COPY config/info.conf /etc/nginx/conf.d
-
 # Add application
 RUN mkdir -p /home/projects
 VOLUME /home/projects
 WORKDIR /home/projects
-
-COPY src /home/projects
 
 EXPOSE 80 443
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
