@@ -5,7 +5,7 @@ RUN apk --no-cache add php7.4 php7.4-fpm php7.4-mysqli php7.4-json php7.4-openss
     php7.4-zlib php7.4-xml php7.4-intl php7.4-dom php7.4-xmlreader php7.4-ctype \
     php7.4-mbstring php7.4-gd nginx supervisor curl php7.4-imagick php7.4-redis php7.4-xdebug \
     php7.4-opcache php7.4-zip php7.4-pdo php7.4-pdo_mysql php7.4-tokenizer php7.4-fileinfo php7.4-pdo_mysql php7.4-simplexml \
-    php7.4-xmlwriter php7.4-iconv composer php7.4-fileinfo php7.4-pear php7.4-dev tzdata
+    php7.4-xmlwriter php7.4-iconv composer php7.4-fileinfo
 
 RUN pecl install mongodb \
     && pecl clear-cache
